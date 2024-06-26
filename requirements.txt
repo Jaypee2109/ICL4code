@@ -1,0 +1,10 @@
+tqdm
+openai
+jsonlines
+
+numpy
+torch
+scikit-learn
+gensim==3.4.0
+transformers
+sentence_transformers

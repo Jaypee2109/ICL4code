@@ -7,7 +7,7 @@ from time import sleep
 import os
 
 
-api_keys = ["sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"]
+api_keys = ["sk-access-account-ZWQ2xLlgS05FBe5e7uDGT3BlbkFJbpvj4Kn3hMBaJELc0xqB"]
 fileanme = sys.argv[1]
 api_idx = 0
 openai.api_key = api_keys[api_idx]
@@ -23,22 +23,27 @@ for pos in tqdm(range(len(querys))):
     query = querys[pos]
     success = 0
     fail_count = 0
-    while success!=1:
+    while success != 1:
         try:
-            response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=[{"role": "user", "content": query['prompt']}])
-            success=1
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": query["prompt"]}],
+            )
+            success = 1
             result = {}
-            result['label'] = query['label']
-            result['choices'] = response["choices"]
-            result['idx'] = pos
-            with jsonlines.open(fileanme.split('.jsonl')[0]+'_results_.jsonl', mode='a') as f:
+            result["label"] = query["label"]
+            result["choices"] = response["choices"]
+            result["idx"] = pos
+            with jsonlines.open(
+                fileanme.split(".jsonl")[0] + "_results_.jsonl", mode="a"
+            ) as f:
                 f.write_all([result])
-        except Exception  as e:
+        except Exception as e:
             info = e.args[0]
             print("Error: ", info)
             sleep(2)
-            fail_count+=1
-        if fail_count>50:
+            fail_count += 1
+        if fail_count > 50:
             fail.append(pos)
             break
     sleep(5)
